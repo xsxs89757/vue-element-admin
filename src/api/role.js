@@ -1,16 +1,25 @@
 import request from '@/utils/request'
 
-export function getRoutes() {
+export function getRoutes(setting = 0) {
   return request({
-    url: '/routes',
+    url: '/routers',
+    method: 'get',
+    params: { setting: setting }
+  })
+}
+
+export function getAllRoutes() {
+  return request({
+    url: '/routers/all',
     method: 'get'
   })
 }
 
-export function getRoles() {
+export function getRoles(query) {
   return request({
     url: '/roles',
-    method: 'get'
+    method: 'get',
+    params: query
   })
 }
 
@@ -29,9 +38,9 @@ export function addRole(data) {
   })
 }
 
-export function updateRole(key, data) {
+export function updateRole(data) {
   return request({
-    url: `/roles/${key}`,
+    url: `/roles`,
     method: 'put',
     data
   })

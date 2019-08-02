@@ -296,3 +296,40 @@ export function createUniqueString() {
   const randomNum = parseInt((1 + Math.random()) * 65536) + ''
   return (+(randomNum + timestamp)).toString(32)
 }
+export function GetUrlRelativePath(url) {
+  var arrUrl = url.split('//')
+
+  var start = arrUrl[1].indexOf('/')
+  var relUrl = arrUrl[1].substring(start)
+  if (relUrl.indexOf('?') !== -1) {
+    relUrl = relUrl.split('?')[0]
+  }
+  if (relUrl.indexOf('#') !== -1) {
+    relUrl = relUrl.replace('/#', '')
+  }
+  return relUrl
+}
+
+export function syntaxHighlight(json) {
+  if (typeof json !== 'string') {
+    json = JSON.stringify(json, undefined, 2)
+  }
+  json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>')
+  return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+    function(match) {
+      var cls = 'number'
+      if (/^"/.test(match)) {
+        if (/:$/.test(match)) {
+          cls = 'key'
+        } else {
+          cls = 'string'
+        }
+      } else if (/true|false/.test(match)) {
+        cls = 'boolean'
+      } else if (/null/.test(match)) {
+        cls = 'null'
+      }
+      return '<span class="' + cls + '">' + match + '</span>'
+    }
+  )
+}

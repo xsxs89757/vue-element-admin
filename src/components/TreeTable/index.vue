@@ -18,6 +18,7 @@
               <i v-if="!scope.row._expand" class="el-icon-plus" />
               <i v-else class="el-icon-minus" />
             </span>
+            <svg-icon v-if="scope.row.icon!==''?true:false" :icon-class="scope.row.icon" />
           </template>
           <template v-if="item.checkbox">
             <el-checkbox

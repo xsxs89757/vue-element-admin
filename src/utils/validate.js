@@ -35,6 +35,12 @@ export function validAlphabets(str) {
   return reg.test(str)
 }
 
+/* 英文和字母*/
+export function checkRate(str) {
+  const reg = /^[0-9a-zA-Z]*$/g
+  return reg.test(str)
+}
+
 /**
  * validate email
  * @param email

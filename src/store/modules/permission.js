@@ -1,4 +1,9 @@
-import { asyncRoutes, constantRoutes } from '@/router'
+/* eslint-disable no-unused-vars */
+/* eslint-disable handle-callback-err */
+/* eslint-disable prefer-const */
+import { constantRoutes } from '@/router'
+import { getRoutes } from '@/api/role'
+import { resetRoutes } from '@/utils/permission'
 
 /**
  * 通过meta.role判断是否与当前用户权限匹配
@@ -37,26 +42,31 @@ export function filterAsyncRoutes(routes, roles) {
 const permission = {
   state: {
     routes: [],
+    permissionRouters: [],
     addRoutes: []
   },
   mutations: {
     SET_ROUTES: (state, routes) => {
       state.addRoutes = routes
       state.routes = constantRoutes.concat(routes)
+    },
+    SET_PERMISSIONROUTERS: (state, routes) => {
+      state.permissionRouters = routes
     }
   },
   actions: {
     GenerateRoutes({ commit }, data) {
-      return new Promise(resolve => {
-        const { roles } = data
-        let accessedRoutes
-        if (roles.includes('admin')) {
-          accessedRoutes = asyncRoutes
-        } else {
-          accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-        }
-        commit('SET_ROUTES', accessedRoutes)
-        resolve(accessedRoutes)
+      return new Promise((resolve, reject) => {
+        getRoutes().then(response => {
+          const { menu, permission } = response.data
+          let accessedRoutes
+          accessedRoutes = resetRoutes(menu)
+          commit('SET_ROUTES', accessedRoutes)
+          commit('SET_PERMISSIONROUTERS', permission)
+          resolve(accessedRoutes)
+        }).catch(error => {
+          reject('menu get error!')
+        })
       })
     }
   }

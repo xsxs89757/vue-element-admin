@@ -8,11 +8,13 @@ const getters = {
   token: state => state.user.token,
   avatar: state => state.user.avatar,
   name: state => state.user.name,
+  config: state => state.user.config,
   introduction: state => state.user.introduction,
   status: state => state.user.status,
   roles: state => state.user.roles,
   setting: state => state.user.setting,
   permission_routes: state => state.permission.routes,
+  permission_check_routes: state => state.permission.permissionRouters,
   addRoutes: state => state.permission.addRoutes,
   errorLogs: state => state.errorLog.logs
 }
