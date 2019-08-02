@@ -15,7 +15,8 @@ const user = {
     setting: {
       articlePlatform: []
     },
-    config: {}
+    config: {},
+    dictionary: {}
   },
 
   mutations: {
@@ -48,6 +49,9 @@ const user = {
     },
     SET_CONFIG: (state, config) => {
       state.config = config
+    },
+    SET_DICTIONARY: (state, dictionary) => {
+      state.dictionary = dictionary
     }
   },
 
@@ -88,6 +92,7 @@ const user = {
           commit('SET_INTRODUCTION', data.introduction)
           commit('SET_IS_ADMINUSERS', data.is_admin)
           commit('SET_CONFIG', data.config)
+          commit('SET_DICTIONARY', data.dictionary)
           resolve(response)
         }).catch(error => {
           reject(error)
