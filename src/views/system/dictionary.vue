@@ -42,7 +42,7 @@
           </el-col>
           <el-col :span="1">&nbsp;</el-col>
           <el-col :span="6">
-            <el-form-item>
+            <el-form-item v-if="checkPermission('system.dictionary.save')">
               <el-button type="danger" @click.prevent="removeDetail(index)">删除</el-button>
               <el-button type="primary" icon="el-icon-top" @click.stop="topDetail(index)" />
               <el-button type="primary" icon="el-icon-bottom" @click.stop="downDetail(index)" />
@@ -51,8 +51,8 @@
 
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :loading="submitDictionaryValueLoading" @click="submitDictionaryValue">{{ $t('table.submit') }}</el-button>
-          <el-button @click="addDictionaryValue">{{ $t('table.add') }}</el-button>
+          <el-button v-if="checkPermission('system.dictionary.save')" type="primary" :loading="submitDictionaryValueLoading" @click="submitDictionaryValue">{{ $t('table.submit') }}</el-button>
+          <el-button v-if="checkPermission('system.dictionary.save')" @click="addDictionaryValue">{{ $t('table.add') }}</el-button>
         </el-form-item>
       </el-form>
     </el-col>
@@ -275,7 +275,6 @@ export default {
                 }
               })
               this.handleCancle()
-              console.log(this.list)
             } else {
               delete this.dictionary.id // 清除id
               const { data } = await addDictionary(this.dictionary)
