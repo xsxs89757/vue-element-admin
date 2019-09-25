@@ -107,18 +107,24 @@ export default {
       for (const router of routes) {
         // skip hidden router
         if (router.hidden) { continue }
-
+        const redirect = router.redirect ? '/' + router.redirect : ''
         const data = {
-          path: path.resolve(basePath, router.path),
+          path: path.resolve(basePath, router.path) + redirect,
+          npath: path.resolve(basePath, router.path),
           title: [...prefixTitle]
         }
 
         if (router.meta && router.meta.title) {
           // generate internationalized title
-          const i18ntitle = i18n.t(`route.${router.meta.title}`)
+          const hasKey = i18n.te(`route.${router.meta.title}`)
+          let i18ntitle = ''
+          if (hasKey) {
+            i18ntitle = i18n.t(`route.${router.meta.title}`)
+          } else {
+            i18ntitle = router.meta.introduction
+          }
 
           data.title = [...data.title, i18ntitle]
-
           if (router.redirect !== 'noredirect') {
             // only push the routes with title
             // special case: need to exclude parent router without redirect
@@ -128,7 +134,7 @@ export default {
 
         // recursive child routes
         if (router.children) {
-          const tempRoutes = this.generateRoutes(router.children, data.path, data.title)
+          const tempRoutes = this.generateRoutes(router.children, data.npath, data.title)
           if (tempRoutes.length >= 1) {
             res = [...res, ...tempRoutes]
           }
@@ -139,6 +145,7 @@ export default {
     querySearch(query) {
       if (query !== '') {
         this.options = this.fuse.search(query)
+        console.log(this.op)
       } else {
         this.options = []
       }
